@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-EMBEDDING_MODEL = "text-embedding-3-small"
+EMBEDDING_MODEL = "text-embedding-3-large"
 
 
 class Embeddings:

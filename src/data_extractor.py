@@ -1,3 +1,4 @@
+import re
 from langchain_community.document_loaders import PyPDFLoader
 
 class DataExtractor:
@@ -13,9 +14,16 @@ class DataExtractor:
         # Initialize an empty string to hold the extracted text
         full_text = ""
         
-        # Iterate through each page in the PDF
-        for page_num in range(len(docs)):
-            text = docs[page_num].page_content               # Extract text from the page
-            full_text += text + "\n"             # Append the text to full_text with a newline
-        
-        return full_text
+        for page in docs:
+            text = page.page_content
+
+            # Normalize Unicode whitespace
+            text = text.replace("\u00A0", " ")   # NBSP
+            text = text.replace("\u200B", "")    # zero-width
+            
+            full_text += text + "\n"
+
+        # Remove overly repeated newlines
+        full_text = re.sub(r'\n{3,}', '\n\n', full_text)
+
+        return full_text.strip()

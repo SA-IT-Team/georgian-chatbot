@@ -5,13 +5,13 @@ from pinecone import ServerlessSpec
 from pinecone import Pinecone
 from dependancies.embeddings import Embeddings
 
-index_name = "langchain-test-index"  # change if desired
+index_name = "georgian-labour-code-test-index"  # change if desired
 pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
 
 if not pc.has_index(index_name):
     pc.create_index(
         name=index_name,
-        dimension=1536,
+        dimension=3072,
         metric="cosine",
         spec=ServerlessSpec(cloud="aws", region="us-east-1"),
     )
@@ -28,5 +28,5 @@ class PineconeOperations:
     
     def upload_documents(self, documents):
         vector_store = self.get_vector_store()
-        uuids = [str(uuid4()) for _ in range(len(documents))]
-        vector_store.add_documents(documents=documents, ids=uuids)
+        # uuids = [str(uuid4()) for _ in range(len(documents))]
+        vector_store.add_documents(documents=documents)
